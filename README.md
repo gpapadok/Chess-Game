@@ -1,2 +1,2 @@
-# Chess-Game
-Python Chess Engine
+# Tkinter Chess
+Python Chess Game
