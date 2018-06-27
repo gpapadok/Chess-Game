@@ -210,7 +210,7 @@ class Queen(Piece):
             for j in range(self.col+step, col, step):
                 if board[row][j] != None:
                     return True
-                return False
+            return False
             
         elif col == self.col:
             if row > self.row:
@@ -221,7 +221,9 @@ class Queen(Piece):
             for j in range(self.row+step, row, step):
                 if board[j][col] != None:
                     return True
-                return False
+            return False
+
+        
             
         else:
             if row > self.row:
@@ -241,6 +243,8 @@ class Queen(Piece):
                 xTemp, yTemp = xTemp + xStep, yTemp + yStep
             
             return False
+
+
         
         
         
@@ -273,6 +277,7 @@ class Bishop(Piece):
         
     
     def __pathIsBlocked(self, row, col, board):
+
         if row > self.row:
             xStep = 1
         else:
@@ -287,7 +292,7 @@ class Bishop(Piece):
         while(xTemp != row and yTemp != col):
             if (board[xTemp][yTemp] != None):
                 return True
-            xTemp, yTemp = xTemp + 1, yTemp + 1
+            xTemp, yTemp = xTemp + xStep, yTemp + yStep
         return False
            
     
