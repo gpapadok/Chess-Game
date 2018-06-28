@@ -20,16 +20,14 @@ class Chess:
     rowDict = { "1":0, "2":1, "3":2, "4":3, "5":4, "6":5, "7":6, "8":7 }
     columnDict = { "A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7 }
 
-    whiteTurn = True
 
-    board = [[None for x in range(8)] for y in range(8)]
-    
-    bk = King(False, 0, 4)
-    wk = King(True, 7, 4)
-
-    __pickedPiece = None
     
     def __init__(self):
+        self.whiteTurn = True
+        self.board = [[None for x in range(8)] for y in range(8)]
+        self.bk = King(False, 0, 4)
+        self.wk = King(True, 7, 4)
+        self.pickedPiece = None
         self.__addPieces()
 
     def __addPieces(self):
@@ -58,7 +56,7 @@ class Chess:
     def debug(self):
         print('')
         print('')
-        print(self.__pickedPiece)
+        print(self.pickedPiece)
         print('white' if self.whiteTurn else 'black')
     def print(self):
         pBoard = [[0 for x in range(8)] for y in range(8)]
@@ -88,13 +86,15 @@ class Chess:
 
     def __pickPiece(self, row, col):
         if self.board[row][col] and not self.__wrongTurn(row, col):
-            self.__pickedPiece = (row, col)
+            self.pickedPiece = (row, col)
+            return True
         else:
             print('no piece there / wrong turn')
+            return False
         
     def __movePiece(self, row, col):
-        oldrow = self.__pickedPiece[0]
-        oldcol = self.__pickedPiece[1]
+        oldrow = self.pickedPiece[0]
+        oldcol = self.pickedPiece[1]
         if self.board[oldrow][oldcol].moveIsValid(row, col, self.board):
             self.board[row][col] = self.board[oldrow][oldcol]
             self.board[oldrow][oldcol] = None
@@ -108,7 +108,7 @@ class Chess:
             #   self.whiteTurn ^= True
         else:
             print('invalid move')
-        self.__pickedPiece = None
+        self.pickedPiece = None
 
 
     def __checkMate(self):
@@ -164,10 +164,12 @@ class Chess:
 
 
     def touchSquare(self, row, col):
-        if self.__pickedPiece:
+        if self.pickedPiece:
             self.__movePiece(row, col)
+            return False
         else:
-            self.__pickPiece(row, col)
+            return self.__pickPiece(row, col)
+            
 
 
 

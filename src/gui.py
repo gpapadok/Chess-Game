@@ -20,9 +20,10 @@ def callback(event, gui):
 	
 	coords = squarecoords[event.widget]
 	
-	gui.chess.touchSquare(coords[0], coords[1])
+	pieceIsPicked = gui.chess.touchSquare(coords[0], coords[1])
 	print(squarecoords[event.widget])
 	gui.draw()
+	
 	if gui.chess.whiteTurn:
 		gui.root.title('white')
 	else:
@@ -108,12 +109,18 @@ class ChessGui:
 
 
 	def draw(self):
+		if self.chess.pickedPiece:
+			row, col = self.chess.pickedPiece
+
 		for square in self.squares:
 			j, k = squarecoords[square][0], squarecoords[square][1]
 			square.delete('all')
 			if self.board[j][k] != None:
 				piecename = self.board[j][k].color + self.board[j][k].name
 				im = square.create_image(0, 0, anchor=NW, image=images[piecename])
+			if self.chess.pickedPiece and j == row and k == col:
+				square.configure(bg='blue')
+
 
 
 
