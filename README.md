@@ -1,2 +1,2 @@
-# Tkinter Chess
-Python Chess Game
+# Tk Chess
+Chess Game with Python and Tkinter
