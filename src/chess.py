@@ -20,7 +20,6 @@ class Chess:
     rowDict = { "1":0, "2":1, "3":2, "4":3, "5":4, "6":5, "7":6, "8":7 }
     columnDict = { "A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "H":7 }
 
-
     
     def __init__(self):
         self.whiteTurn = True
@@ -29,6 +28,7 @@ class Chess:
         self.wk = King(True, 7, 4)
         self.pickedPiece = None
         self.__addPieces()
+
 
     def __addPieces(self):
         for j in range(8):
@@ -58,6 +58,8 @@ class Chess:
         print('')
         print(self.pickedPiece)
         print('white' if self.whiteTurn else 'black')
+
+
     def print(self):
         pBoard = [[0 for x in range(8)] for y in range(8)]
         self.debug()        
@@ -76,6 +78,7 @@ class Chess:
 
         print('')
 
+
     def __wrongTurn(self, row, col):
         if self.board[row][col].isWhite != self.whiteTurn:
             print('wrong turn')
@@ -92,20 +95,23 @@ class Chess:
             print('no piece there / wrong turn')
             return False
         
+
     def __movePiece(self, row, col):
         oldrow = self.pickedPiece[0]
         oldcol = self.pickedPiece[1]
         if self.board[oldrow][oldcol].moveIsValid(row, col, self.board):
+            temp = self.board[row][col]
             self.board[row][col] = self.board[oldrow][oldcol]
             self.board[oldrow][oldcol] = None
             self.whiteTurn ^= True
             self.board[row][col].move(row, col, self.board)
-            # if self.__checkMate():
-            #   self.board[oldrow][oldcol] = self.board[row][col]
-            #   self.board[row][col] = temp
-            #   print('king under threat')
-            # else:
-            #   self.whiteTurn ^= True
+            if self.__checkMate():
+              self.board[oldrow][oldcol] = self.board[row][col]
+              self.board[row][col] = temp
+              self.whiteTurn ^= True
+              self.board[oldrow][oldcol].move(oldrow, oldcol, self.board)
+              print('king under threat')
+            
         else:
             print('invalid move')
         self.pickedPiece = None
@@ -118,31 +124,26 @@ class Chess:
             return self.bk.underThreat(self.board)
 
 
-
-
-
-
-
-
     # def movePiece(self, row, col, newrow, newcol):
     #     piece = self.board[row][col]
     #     self.board[piece.row][piece.col] = None
     #     piece.row, piece.col = newrow, newcol
     #     self.board[newrow][newcol] = piece
+
         
     # def __pickPiece(self, row, col):
     #   if self.board[row][col] and \
     #      self.board[row][col].isWhite == self.whiteTurn:
     #       self.pickedPiece = self.board[row][col]
     #   else:
-    #       print('no piece there / wrong turn')
-        
+    #       print('no piece there / wrong turn')        
         
 
     # def wrongTurn(self, row, col):
     #   if self.board[row][col].isWhite != self.whiteTurn:
     #       print('wrong turn')
     #       return True
+
 
     # def makeMove(self, row, col):
     #   if self.pickedPiece.moveIsValid(row, col, self.board):
@@ -153,14 +154,10 @@ class Chess:
     #           self.movePiece(row, col, self.pickedPiece.row, self.pickedPiece.col)
     #           print('king under threat')
     #       else:
-    #           self.whiteTurn ^= True
-                
+    #           self.whiteTurn ^= True                
     #   else:
     #       print('invalid move')
     #   self.pickedPiece = None
-
-
-
 
 
     def touchSquare(self, row, col):
@@ -169,10 +166,6 @@ class Chess:
             return False
         else:
             return self.__pickPiece(row, col)
-            
-
-
-
 
 
 def playchess():
@@ -183,7 +176,6 @@ def playchess():
         row = int(input('row: '))
         col = int(input('col: '))
         chess.touchSquare(row, col)
-
 
 
 if __name__ == "__main__":

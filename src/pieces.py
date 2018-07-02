@@ -19,6 +19,7 @@ class Piece:
         self.isWhite = isWhite
         self.row, self.col = row, col
         self.color = 'w' if self.isWhite else 'b'
+
         
     def moveIsValid(self, row, col, board):
         if (row < 0 and row > 7) or (col < 0 and col > 7):
@@ -29,8 +30,10 @@ class Piece:
             return False
         return True
 
+
     def move(self, row, col, board):
     	self.row, self.col = row, col
+
 
     def underThreat(self, board):
         for row in board:
@@ -50,6 +53,7 @@ class Pawn(Piece):
     	super(Pawn, self).__init__(isWhite, row, col)
     	self.step = -1 if isWhite else 1
     	self.__firstMove = True
+
     
     def move(self, row, col, board):
     	super(Pawn, self).move(row, col, board)
@@ -57,11 +61,13 @@ class Pawn(Piece):
             board[row][col] = Queen(self.isWhite, row, col)
     	self.__firstMove = False
 
+
     def moveIsValid(self, row, col, board):
         if (not super(Pawn, self).moveIsValid(row, col, board)):
             return False
 
-        if self.__firstMove and row == self.row + 2*self.step and board[row][col] == None and self.col == col:
+        if self.__firstMove and row == self.row + 2*self.step and board[row][col] == None \
+           and self.col == col and board[self.row + self.step][col] == None:
         	return True
 
         if self.row + self.step == row:
@@ -73,11 +79,6 @@ class Pawn(Piece):
         		return False
         else:
         	return False
-
-
-
-        
-
 
 
         # if abs(self.col - col) > 1:
@@ -108,6 +109,7 @@ class Pawn(Piece):
         # # self.__firstMove = False
         # return True
 
+
 class King(Piece):
     
     name = 'K'
@@ -121,6 +123,7 @@ class King(Piece):
         
         return True
 
+
     # def isSafe(self, board):
     #     for piece in board:
     #         if not piece:
@@ -128,6 +131,7 @@ class King(Piece):
     #                 if piece.moveIsValid(self.row, self.col, board):
     #                     return False
     #     return True
+
         
     #def byBishop(self, board):
         
@@ -186,6 +190,7 @@ class Queen(Piece):
       
 '''
 
+
 class Queen(Piece):
     
     name = 'Q'
@@ -199,6 +204,7 @@ class Queen(Piece):
             return False
         
         return not self.__pathIsBlocked(row, col, board)
+
     
     def __pathIsBlocked(self, row, col, board):
         if row == self.row:
@@ -222,9 +228,7 @@ class Queen(Piece):
                 if board[j][col] != None:
                     return True
             return False
-
-        
-            
+           
         else:
             if row > self.row:
                 xStep = 1
@@ -243,11 +247,7 @@ class Queen(Piece):
                 xTemp, yTemp = xTemp + xStep, yTemp + yStep
             
             return False
-
-
-        
-        
-        
+       
         
 class Knight(Piece):
     
@@ -308,6 +308,7 @@ class Rook(Piece):
             return False
         
         return not self.__pathIsBlocked(row, col, board)
+
         
     def __pathIsBlocked(self, row, col, board):
         if row == self.row:
@@ -327,9 +328,7 @@ class Rook(Piece):
                 step = -1
             else: return False
             for j in range(self.row + step, row, step):
-                print(board[j][col])
                 if board[j][col] != None:
-                    print(board[j][col])
                     return True
         return False
             

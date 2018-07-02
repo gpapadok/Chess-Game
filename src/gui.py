@@ -86,7 +86,11 @@ class ChessGui:
 
         row = event.widget.grid_info()['row']
         column = event.widget.grid_info()['column']
+
+        
         if not gui.board[row][column] or gui.board[row][column].isWhite != self.chess.whiteTurn: return
+        gui.board[row][column].underThreat(gui.board)
+        
 
         for square in gui.squares:
             coords = squarecoords[square]
