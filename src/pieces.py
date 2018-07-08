@@ -81,114 +81,53 @@ class Pawn(Piece):
         	return False
 
 
-        # if abs(self.col - col) > 1:
-        #     return False
-        # if self.__firstMove:
-        #     if abs(self.row - row) > 2:
-        #         return False
-        # else:
-        #     if abs(self.row - row) > 1:
-        #         return False
-        # # print(self.col, col)
-        # if self.col != col:
-        #     if board[row][col] == None:
-        #         return False
-        #     else:
-        #         return True
-        
-        # if board[row][col] != None:
-        #     return False
-        
-        # if self.isWhite:
-        #     if row > self.row:
-        #         return False
-        # else:
-        #     if row < self.row:
-        #         return False        
-
-        # # self.__firstMove = False
-        # return True
-
-
 class King(Piece):
     
     name = 'K'
-    
+
+    def __init__(self, row ,col, board):
+        super(King, self).__init__(row, col, board)
+        self.__firstMove = True
+
+    def move(self, row, col, board):
+        # castling
+        if self.__firstMove and (row, col) == (self.row, 2):
+            # queenside
+            print('queenside')
+            board[self.row][0].move(self.row, 3, board)
+        elif self.__firstMove and (row, col) == (self.row, 6):
+            # kingside
+            print('kingside')
+            board[self.row][7].move(self.row, 5, board)
+        super(King, self).move(row, col, board)
+        self.__firstMove = False
+
     def moveIsValid(self, row, col, board):
         if not super(King, self).moveIsValid(row, col, board):
             return False
         
+        
+        # check for castling
+        if self.__firstMove == True:
+            # queenside
+            if (row, col) == (self.row, 2):
+                if type(board[self.row][0]) == Rook:
+                    if board[self.row][0].firstMove:
+                        if board[self.row][1] == None and board[self.row][3] == None:
+                            return True
+            # kingside
+            if (row, col) == (self.row, 6):
+                if type(board[self.row][7]) == Rook:
+                    if board[self.row][7].firstMove:
+                        if board[self.row][5] == None:
+                            return True
+
         if (abs(self.row - row) > 1 or abs(self.col - col) > 1):
             return False
-        
+
         return True
-
-
-    # def isSafe(self, board):
-    #     for piece in board:
-    #         if not piece:
-    #             if piece.isWhite != self.isWhite:
-    #                 if piece.moveIsValid(self.row, self.col, board):
-    #                     return False
-    #     return True
-
-        
-    #def byBishop(self, board):
-        
-        
-'''
-class Queen(Piece):
     
-    name = 'Q'
 
-    def moveIsValid(self, row, col, board):
-        if not super(Queen, self).moveIsValid(row, col, board):
-            return False
-
-        if abs(self.row - row) != abs(self.col - col) and (row != self.row and col != self.col):
-            return False
-
-        return not self.__pathIsBlocked(row, col, board)
-
-    def __pathIsBlocked(self, row, col, board):
-        if row == self.row:
-            if col > self.col:
-                step = 1
-            else:
-                step = -1
-            for j in range(col+1, self.col, step):
-                if board[row][j] != 0:
-                    return True
-            return False
-
-        elif col == self.col:
-            if row > self.row:
-                step = 1
-            else:
-                step = -1
-            for j in range(row+1, self.row, step):
-                if board[j][col] != 0:
-                    return True
-            return False
-
-        if row > self.row:
-            xStep = 1
-        else:
-            xStep = -1
-
-        if col > self.col:
-            yStep = 1
-        else:
-            yStep = -1
-
-        xTemp, yTemp = self.row + xStep, self.col + yStep
-        while(xTemp != row and yTemp != col):
-            if (board[xTemp][yTemp] != 0):
-                return True
-            xTemp, yTemp = xTemp + 1, yTemp + 1
-        return False
-      
-'''
 
 
 class Queen(Piece):
@@ -300,6 +239,14 @@ class Rook(Piece):
     
     name = 'R'
     
+    def __init__(self, row ,col, board):
+        super(Rook, self).__init__(row, col, board)
+        self.firstMove = True
+
+    def move(self, row, col, board):
+        super(Rook, self).move(row, col, board)
+        self.firstMove = False
+
     def moveIsValid(self, row, col, board):
         if not super(Rook, self).moveIsValid(row, col, board):
             return False

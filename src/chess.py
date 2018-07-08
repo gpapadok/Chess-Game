@@ -118,7 +118,7 @@ class Chess:
 
 
     def __checkMate(self):
-        if self.whiteTurn:
+        if not self.whiteTurn:
             return self.wk.underThreat(self.board)
         else:
             return self.bk.underThreat(self.board)
