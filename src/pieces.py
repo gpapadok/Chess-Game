@@ -32,7 +32,10 @@ class Piece:
 
 
     def move(self, row, col, board):
-    	self.row, self.col = row, col
+        board[row][col] = board[self.row][self.col]
+        board[self.row][self.col] = None
+
+        self.row, self.col = row, col
 
 
     def underThreat(self, board):
@@ -50,16 +53,16 @@ class Pawn(Piece):
     name = 'P'
     
     def __init__(self, isWhite, row, col):
-    	super(Pawn, self).__init__(isWhite, row, col)
-    	self.step = -1 if isWhite else 1
-    	self.__firstMove = True
+        super(Pawn, self).__init__(isWhite, row, col)
+        self.step = -1 if isWhite else 1
+        self.__firstMove = True
 
     
     def move(self, row, col, board):
-    	super(Pawn, self).move(row, col, board)
-    	if row == 0 or row == 7:
+        super(Pawn, self).move(row, col, board)
+        if row == 0 or row == 7:
             board[row][col] = Queen(self.isWhite, row, col)
-    	self.__firstMove = False
+        self.__firstMove = False
 
 
     def moveIsValid(self, row, col, board):
@@ -68,17 +71,17 @@ class Pawn(Piece):
 
         if self.__firstMove and row == self.row + 2*self.step and board[row][col] == None \
            and self.col == col and board[self.row + self.step][col] == None:
-        	return True
+            return True
 
         if self.row + self.step == row:
-        	if self.col == col and board[row][col] == None:
-        		return True
-        	elif abs(self.col - col) == 1 and board[row][col] != None and board[row][col].isWhite != self.isWhite:
-        		return True
-        	else:
-        		return False
+            if self.col == col and board[row][col] == None:
+                return True
+            elif abs(self.col - col) == 1 and board[row][col] != None and board[row][col].isWhite != self.isWhite:
+                return True
+            else:
+                return False
         else:
-        	return False
+            return False
 
 
 class King(Piece):

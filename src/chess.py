@@ -101,15 +101,15 @@ class Chess:
         oldcol = self.pickedPiece[1]
         if self.board[oldrow][oldcol].moveIsValid(row, col, self.board):
             temp = self.board[row][col]
-            self.board[row][col] = self.board[oldrow][oldcol]
-            self.board[oldrow][oldcol] = None
+            # self.board[row][col] = self.board[oldrow][oldcol]
+            # self.board[oldrow][oldcol] = None
             self.whiteTurn ^= True
-            self.board[row][col].move(row, col, self.board)
+            self.board[oldrow][oldcol].move(row, col, self.board)
             if self.__checkMate():
-              self.board[oldrow][oldcol] = self.board[row][col]
-              self.board[row][col] = temp
+              # self.board[oldrow][oldcol] = self.board[row][col]
+              # self.board[row][col] = temp
               self.whiteTurn ^= True
-              self.board[oldrow][oldcol].move(oldrow, oldcol, self.board)
+              self.board[row][col].move(oldrow, oldcol, self.board)
               print('king under threat')
             
         else:
