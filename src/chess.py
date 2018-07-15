@@ -110,6 +110,7 @@ class Chess:
               # self.board[row][col] = temp
               self.whiteTurn ^= True
               self.board[row][col].move(oldrow, oldcol, self.board)
+              self.board[row][col] = temp
               print('king under threat')
             
         else:

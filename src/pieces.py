@@ -32,6 +32,10 @@ class Piece:
 
 
     def move(self, row, col, board):
+        # if board[row][col]:
+        #     self.temp = board[row][col]
+        # else:
+        #     self.temp = None
         board[row][col] = board[self.row][self.col]
         board[self.row][self.col] = None
 
